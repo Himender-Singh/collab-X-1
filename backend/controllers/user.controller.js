@@ -84,8 +84,6 @@ export const login = async (req, res) => {
       check: user.check,
     };
 
-    console.log(user,"data");
-
     return res
       .cookie("token", token, {
         httpOnly: true,
