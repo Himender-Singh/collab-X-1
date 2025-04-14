@@ -16,43 +16,42 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const __dirname = path.resolve();
 
-// Connect to the database
+// Database connection
 connectDB();
 
-// Middlewares
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-const corsOptions = {
-  origin: [ "http://localhost:5173"],
-  methods: "GET,POST,PUT,DELETE", // Allowed HTTP methods
-  allowedHeaders: "Content-Type,Authorization",
-  credentials: true,
-};
-app.use(cors(corsOptions));
+// CORS Configuration
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true
+}));
 
-// API routes
+// Routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/post", postRoute);
 app.use("/api/v1/message", messageRoute);
 app.use("/api/v1/task", taskRoute);
 app.use("/api/v1/chat", chatRoute);
 
-app.use(express.static(path.join(__dirname, "/Frontend/dist")));
+// Static files serving
+app.use(express.static(path.join(__dirname, "Frontend", "dist")));
+
+// Client-side routing
 app.get("*", (_, res) => {
-  res.sendFile(path.resolve(__dirname, "Frontend", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "Frontend", "dist", "index.html"));
 });
 
-// Error handling middleware
+// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res
-    .status(err.status || 500)
-    .json({ error: err.message || "Something broke!" });
+  res.status(500).json({ error: "Internal Server Error" });
 });
 
-// Start the server
+// Start server
 server.listen(PORT, () => {
-  console.log(`Server listening at port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
