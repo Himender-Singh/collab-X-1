@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  @apply bg-gradient-to-br from-[#020106] to-[#060000]; /* Neon gradient background */
+  background-size: 510% 510%;
+  animation: gradientAnimation 5s ease infinite;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #fbf7ff #020106; /* Thumb & Track for Firefox */
+  scroll-behavior: smooth;
+}
+
+/* Animation for Background */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
